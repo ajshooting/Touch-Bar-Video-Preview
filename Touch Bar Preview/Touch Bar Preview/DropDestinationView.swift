@@ -28,6 +28,7 @@
 //
 
 import Cocoa
+import AVFoundation
 
 protocol DropDestinationViewDelegate {
     func processImageURLs(_ urls: [URL])
@@ -87,8 +88,8 @@ class DropDestinationView: NSView {
     }
     
     
-    // define URL types -> images
-    let filteringOptions = [NSPasteboard.ReadingOptionKey.urlReadingContentsConformToTypes:NSImage.imageTypes]
+    // define URL types -> images and movies
+    let filteringOptions = [NSPasteboard.ReadingOptionKey.urlReadingContentsConformToTypes: NSImage.imageTypes + [AVFileType.mp4.rawValue, AVFileType.mov.rawValue, AVFileType.m4v.rawValue, "public.movie"]]
     
     func shouldAllowDrag(_ draggingInfo: NSDraggingInfo) -> Bool {
         
@@ -97,7 +98,7 @@ class DropDestinationView: NSView {
         // referenece to the dragging pasteboard
         let pasteBoard = draggingInfo.draggingPasteboard()
         
-        // ask pasteboard if URLs reference to images
+        // ask pasteboard if URLs reference to images or movies
         if pasteBoard.canReadObject(forClasses: [NSURL.self], options: filteringOptions) {
             canAccept = true
         }
